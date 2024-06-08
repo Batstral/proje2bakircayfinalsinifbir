@@ -132,6 +132,7 @@ def main():
         sec = int(input("giriniz: "))
         if sec == 1:
             print(df)
+
             # Doktorları uzmanlık alanlarına göre sıralayıp sayısını bulma
             doktor_uzmanlik = df[df['uzmanlik'] != 0].groupby('uzmanlik').size()
             print("\nDoktorların Uzmanlık Alanlarına Göre Gruplandırma")
