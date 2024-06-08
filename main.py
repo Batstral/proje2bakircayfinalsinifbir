@@ -8,6 +8,15 @@ import hasta
 # Kodu çalıştırınca tüm satırın gözükmesi için gerekli kod satırı
 pd.set_option('display.max_columns', None)
 
+# Sütunların genişletmek
+pd.set_option('display.max_colwidth', None)
+
+# Maksimum satır sayısını sonsuz yapmak
+pd.set_option('display.max_rows', None)
+
+# Çerçeve satırlarını genişletmek
+pd.set_option('display.width', 100000)
+
 
 def main():
     print("Hastane Yönetim Sistemine Hoşgeldiniz.")
@@ -44,73 +53,77 @@ def main():
     hastalar = [hhasta1, hhasta2, hhasta3]
     personeller = [hpersonel1, hpersonel2]
 
-    for insan in doktorlar:
-        yeni_satir = pd.DataFrame([{'personel_no': insan.get_personel_no,
-                                    'ad': insan.get_ad,
-                                    'soyad': insan.get_soyad,
-                                    'departman': insan.get_departman,
-                                    'maas': insan.get_maas,
-                                    'uzmanlik': insan.get_uzmanlik,
-                                    'deneyim_yili': insan.get_deneyim_yili,
-                                    'hastane': insan.get_hastane,
-                                    'calisma_saati': None,
-                                    'sertifika': None,
-                                    'hasta_no': None,
-                                    'dogum_tarihi': None,
-                                    'hastalik': None,
-                                    'tedavi': None}])
-        df = pd.concat([df, yeni_satir], ignore_index=True)
+    try:
+        for insan in doktorlar:
+            print(insan)
+            yeni_satir = pd.DataFrame([{'personel_no': insan.get_personel_no(),
+                                        'ad': insan.get_ad(),
+                                        'soyad': insan.get_soyad(),
+                                        'departman': insan.get_departman(),
+                                        'maas': insan.get_maas(),
+                                        'uzmanlik': insan.get_uzmanlik(),
+                                        'deneyim_yili': insan.get_deneyim_yili(),
+                                        'hastane': insan.get_hastane(),
+                                        'calisma_saati': 0,
+                                        'sertifika': 0,
+                                        'hasta_no': 0,
+                                        'dogum_tarihi': 0,
+                                        'hastalik': 0,
+                                        'tedavi': 0}])
+            df = pd.concat([df, yeni_satir], ignore_index=True)
 
-    for insan in hemsireler:
-        yeni_satir = pd.DataFrame([{'personel_no': insan.get_personel_no,
-                                    'ad': insan.get_ad,
-                                    'soyad': insan.get_soyad,
-                                    'departman': insan.get_departman,
-                                    'maas': insan.get_maas,
-                                    'uzmanlik': None,
-                                    'deneyim_yili': None,
-                                    'hastane': insan.get_hastane,
-                                    'calisma_saati': insan.get_calisma_saati,
-                                    'sertifika': insan.get_sertifika,
-                                    'hasta_no': None,
-                                    'dogum_tarihi': None,
-                                    'hastalik': None,
-                                    'tedavi': None}])
-        df = pd.concat([df, yeni_satir], ignore_index=True)
+        for insan in hemsireler:
+            yeni_satir = pd.DataFrame([{'personel_no': insan.get_personel_no(),
+                                        'ad': insan.get_ad(),
+                                        'soyad': insan.get_soyad(),
+                                        'departman': insan.get_departman(),
+                                        'maas': insan.get_maas(),
+                                        'uzmanlik': 0,
+                                        'deneyim_yili': 0,
+                                        'hastane': insan.get_hastane(),
+                                        'calisma_saati': insan.get_calisma_saati(),
+                                        'sertifika': insan.get_sertifika(),
+                                        'hasta_no': 0,
+                                        'dogum_tarihi': 0,
+                                        'hastalik': 0,
+                                        'tedavi': 0}])
+            df = pd.concat([df, yeni_satir], ignore_index=True)
 
-    for insan in personeller:
-        yeni_satir = pd.DataFrame([{'personel_no': insan.get_personel_no,
-                                    'ad': insan.get_ad,
-                                    'soyad': insan.get_soyad,
-                                    'departman': insan.get_departman,
-                                    'maas': insan.get_maas,
-                                    'uzmanlik': None,
-                                    'deneyim_yili': None,
-                                    'hastane': None,
-                                    'calisma_saati': None,
-                                    'sertifika': None,
-                                    'hasta_no': None,
-                                    'dogum_tarihi': None,
-                                    'hastalik': None,
-                                    'tedavi': None}])
-        df = pd.concat([df, yeni_satir], ignore_index=True)
+        for insan in personeller:
+            yeni_satir = pd.DataFrame([{'personel_no': insan.get_personel_no(),
+                                        'ad': insan.get_ad(),
+                                        'soyad': insan.get_soyad(),
+                                        'departman': insan.get_departman(),
+                                        'maas': insan.get_maas(),
+                                        'uzmanlik': 0,
+                                        'deneyim_yili': 0,
+                                        'hastane': 0,
+                                        'calisma_saati': 0,
+                                        'sertifika': 0,
+                                        'hasta_no': 0,
+                                        'dogum_tarihi': 0,
+                                        'hastalik': 0,
+                                        'tedavi': 0}])
+            df = pd.concat([df, yeni_satir], ignore_index=True)
 
-    for insan in hastalar:
-        yeni_satir = pd.DataFrame([{'personel_no': None,
-                                    'ad': insan.get_ad,
-                                    'soyad': insan.get_soyad,
-                                    'departman': None,
-                                    'maas': None,
-                                    'uzmanlik': None,
-                                    'deneyim_yili': None,
-                                    'hastane': None,
-                                    'calisma_saati': None,
-                                    'sertifika': None,
-                                    'hasta_no': insan.get_hasta_no,
-                                    'dogum_tarihi': insan.get_dogum_tarihi,
-                                    'hastalik': insan.get_hastalik,
-                                    'tedavi': insan.get_tedavi}])
-        df = pd.concat([df, yeni_satir], ignore_index=True)
+        for insan in hastalar:
+            yeni_satir = pd.DataFrame([{'personel_no': 0,
+                                        'ad': insan.get_ad(),
+                                        'soyad': insan.get_soyad(),
+                                        'departman': 0,
+                                        'maas': 0,
+                                        'uzmanlik': 0,
+                                        'deneyim_yili': 0,
+                                        'hastane': 0,
+                                        'calisma_saati': 0,
+                                        'sertifika': 0,
+                                        'hasta_no': insan.get_hasta_no(),
+                                        'dogum_tarihi': insan.get_dogum_tarihi(),
+                                        'hastalik': insan.get_hastalik(),
+                                        'tedavi': insan.get_tedavi()}])
+            df = pd.concat([df, yeni_satir], ignore_index=True)
+    except Exception as e:
+        print(e)
 
     while True:
         print("Yapmak istediğiniz işlemi"
