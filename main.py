@@ -55,7 +55,6 @@ def main():
 
     try:
         for insan in doktorlar:
-            print(insan)
             yeni_satir = pd.DataFrame([{'personel_no': insan.get_personel_no(),
                                         'ad': insan.get_ad(),
                                         'soyad': insan.get_soyad(),
@@ -118,7 +117,7 @@ def main():
                                         'calisma_saati': 0,
                                         'sertifika': 0,
                                         'hasta_no': insan.get_hasta_no(),
-                                        'dogum_tarihi': insan.get_dogum_tarihi(),
+                                        'dogum_tarihi': pd.to_datetime(insan.get_dogum_tarihi(), format='%d-%m-%Y'),
                                         'hastalik': insan.get_hastalik(),
                                         'tedavi': insan.get_tedavi()}])
             df = pd.concat([df, yeni_satir], ignore_index=True)
@@ -126,16 +125,47 @@ def main():
         print(e)
 
     while True:
-        print("Yapmak istediğiniz işlemi"
+        print("\nYapmak istediğiniz işlemi"
               "\n(1)Hazır Nesneleri Kullan"
               "\n2) Yeni Nesneleri Ata"
               "\n3) Çıkış Yap)")
         sec = int(input("giriniz: "))
         if sec == 1:
             print(df)
+            # Doktorları uzmanlık alanlarına göre sıralayıp sayısını bulma
+            doktor_uzmanlik = df[df['uzmanlik'] != 0].groupby('uzmanlik').size()
+            print("\nDoktorların Uzmanlık Alanlarına Göre Gruplandırma")
+            print(doktor_uzmanlik)
+
+            # 10 yıldan fazla deneyime sahip doktorlar
+            doktor_deneyim = df[df['deneyim_yili'] > 10]['deneyim_yili'].count()
+            print("\nDeneyimi 10 Yılı Aşkın Doktorlar", doktor_deneyim)
+
+            # Hasta numarası 0'dan farklı nesneler için isme göre alfabetik sıralama
+            hasta_alfabe = df[df['hasta_no'] != 0].sort_values(by='ad')
+            print("\nHasta İsimlerine Göre Alfabetik Sıralama")
+            print(hasta_alfabe)
+
+            # Maaşı 35000 TL üzerinde olan personeller
+            otuzbesbin_maas = df[df['maas'] > 35000]
+            print("\nMaaşı 35000 TL'nin Üzerinde Olan Personeller")
+            print(otuzbesbin_maas)
+
+            # Doğum tarihi sütununu datetime formatına çevirme
+            df['dogum_tarihi'] = pd.to_datetime(df['dogum_tarihi'], errors='coerce')
+
+            # Doğum tarihi 1 Ocak 2005'ten yukarısında olan hastaları sıralama
+            df_dogum_tarihi = df[(df['personel_no'] == 0) & (df['dogum_tarihi'] >= pd.Timestamp('2005-01-01'))]
+            print("\nDoğum Tarihi 1 Ocak 2005 ve Sonrası Olan Hastalar")
+            print(df_dogum_tarihi)
+
+            # Belirli sütunlara göre yeni DataFrame oluşturma
+            yeni_df = df[['ad', 'soyad', 'departman', 'maas', 'uzmanlik', 'deneyim_yili', 'hastalik', 'tedavi']]
+            print("\nYeni DataFrame:")
+            print(yeni_df)
 
         elif sec == 2:
-            print("Yapmak istediğiniz işlemi"
+            print("\nYapmak istediğiniz işlemi"
                   "\n(1) Personel Ata"
                   "\n2) Doktor Ata"
                   "\n3) Hemşire Ata"
@@ -151,9 +181,6 @@ def main():
                 pmaas = int(input("Personel Maaş: "))
                 yeni_personel = personel.Personel(pno, pad, psoyad, pdepartman, pmaas)
                 personeller.append(yeni_personel)
-                yeni_satir = pd.DataFrame([{'personel_no': pno, 'ad': pad, 'soyad': psoyad, 'departman': pdepartman,
-                                            'maas': pmaas}])
-                df = pd.concat([df, yeni_satir], ignore_index=True)
 
             elif secim == 2:
                 pno = int(input("Personel No: "))
@@ -166,9 +193,6 @@ def main():
                 dh = input("Doktor Çalıştığı Hastane: ")
                 yeni_doktor = doktor.Doktor(pno, pad, psoyad, pdepartman, pmaas, duz, ddy, dh)
                 doktorlar.append(yeni_doktor)
-                yeni_satir = pd.DataFrame([{'personel_no': pno, 'ad': pad, 'soyad': psoyad, 'departman': pdepartman,
-                                            'maas': pmaas, 'uzmanlık': duz, 'deneyim_yili': ddy, 'hastane': dh}])
-                df = pd.concat([df, yeni_satir], ignore_index=True)
 
             elif secim == 3:
                 pno = int(input("Personel No: "))
@@ -181,9 +205,6 @@ def main():
                 heh = input("Hemşire Çalıştığı Hastane: ")
                 yeni_hemsire = hemsire.Hemsire(pno, pad, psoyad, pdepartman, pmaas, hecs, hes, heh)
                 hemsireler.append(yeni_hemsire)
-                yeni_satir = pd.DataFrame([{'personel_no': pno, 'ad': pad, 'soyad': psoyad, 'departman': pdepartman,
-                                            'maas': pmaas, 'calisma_saati': hecs, 'sertifika': hes, 'hastane': heh}])
-                df = pd.concat([df, yeni_satir], ignore_index=True)
 
             elif secim == 4:
                 hano = int(input("Hasta No: "))
@@ -194,10 +215,6 @@ def main():
                 hate = input("Hasta Tedavisi: ")
                 yeni_hasta = hasta.Hasta(hano, haad, haso, hadt, haha, hate)
                 hastalar.append(yeni_hasta)
-                yeni_satir = pd.DataFrame(
-                    [{'hasta_no': hano, 'ad': haad, 'soyad': haso, 'dogum_tarihi': hadt, 'hastalik': haha,
-                      'tedavi': hate}])
-                df = pd.concat([df, yeni_satir], ignore_index=True)
 
             elif secim == 9:
                 break
