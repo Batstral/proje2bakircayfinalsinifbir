@@ -44,14 +44,82 @@ def main():
     hastalar = [hhasta1, hhasta2, hhasta3]
     personeller = [hpersonel1, hpersonel2]
 
+    for insan in doktorlar:
+        yeni_satir = pd.DataFrame([{'personel_no': insan.get_personel_no,
+                                    'ad': insan.get_ad,
+                                    'soyad': insan.get_soyad,
+                                    'departman': insan.get_departman,
+                                    'maas': insan.get_maas,
+                                    'uzmanlik': insan.get_uzmanlik,
+                                    'deneyim_yili': insan.get_deneyim_yili,
+                                    'hastane': insan.get_hastane,
+                                    'calisma_saati': None,
+                                    'sertifika': None,
+                                    'hasta_no': None,
+                                    'dogum_tarihi': None,
+                                    'hastalik': None,
+                                    'tedavi': None}])
+        df = pd.concat([df, yeni_satir], ignore_index=True)
+
+    for insan in hemsireler:
+        yeni_satir = pd.DataFrame([{'personel_no': insan.get_personel_no,
+                                    'ad': insan.get_ad,
+                                    'soyad': insan.get_soyad,
+                                    'departman': insan.get_departman,
+                                    'maas': insan.get_maas,
+                                    'uzmanlik': None,
+                                    'deneyim_yili': None,
+                                    'hastane': insan.get_hastane,
+                                    'calisma_saati': insan.get_calisma_saati,
+                                    'sertifika': insan.get_sertifika,
+                                    'hasta_no': None,
+                                    'dogum_tarihi': None,
+                                    'hastalik': None,
+                                    'tedavi': None}])
+        df = pd.concat([df, yeni_satir], ignore_index=True)
+
+    for insan in personeller:
+        yeni_satir = pd.DataFrame([{'personel_no': insan.get_personel_no,
+                                    'ad': insan.get_ad,
+                                    'soyad': insan.get_soyad,
+                                    'departman': insan.get_departman,
+                                    'maas': insan.get_maas,
+                                    'uzmanlik': None,
+                                    'deneyim_yili': None,
+                                    'hastane': None,
+                                    'calisma_saati': None,
+                                    'sertifika': None,
+                                    'hasta_no': None,
+                                    'dogum_tarihi': None,
+                                    'hastalik': None,
+                                    'tedavi': None}])
+        df = pd.concat([df, yeni_satir], ignore_index=True)
+
+    for insan in hastalar:
+        yeni_satir = pd.DataFrame([{'personel_no': None,
+                                    'ad': insan.get_ad,
+                                    'soyad': insan.get_soyad,
+                                    'departman': None,
+                                    'maas': None,
+                                    'uzmanlik': None,
+                                    'deneyim_yili': None,
+                                    'hastane': None,
+                                    'calisma_saati': None,
+                                    'sertifika': None,
+                                    'hasta_no': insan.get_hasta_no,
+                                    'dogum_tarihi': insan.get_dogum_tarihi,
+                                    'hastalik': insan.get_hastalik,
+                                    'tedavi': insan.get_tedavi}])
+        df = pd.concat([df, yeni_satir], ignore_index=True)
+
     while True:
         print("Yapmak istediğiniz işlemi"
               "\n(1)Hazır Nesneleri Kullan"
-              "2) Yeni Nesneleri Ata"
-              "3) Çıkış Yap)")
+              "\n2) Yeni Nesneleri Ata"
+              "\n3) Çıkış Yap)")
         sec = int(input("giriniz: "))
         if sec == 1:
-            print("cu")
+            print(df)
 
         elif sec == 2:
             print("Yapmak istediğiniz işlemi"
@@ -70,8 +138,9 @@ def main():
                 pmaas = int(input("Personel Maaş: "))
                 yeni_personel = personel.Personel(pno, pad, psoyad, pdepartman, pmaas)
                 personeller.append(yeni_personel)
-                yeni_satir = pd.DataFrame(
-                    [{'personel_no': pno, 'ad': pad, 'soyad': psoyad, 'departman': pdepartman, 'maas': pmaas}])
+                yeni_satir = pd.DataFrame([{'personel_no': pno, 'ad': pad, 'soyad': psoyad, 'departman': pdepartman,
+                                            'maas': pmaas}])
+                df = pd.concat([df, yeni_satir], ignore_index=True)
 
             elif secim == 2:
                 pno = int(input("Personel No: "))
@@ -86,6 +155,7 @@ def main():
                 doktorlar.append(yeni_doktor)
                 yeni_satir = pd.DataFrame([{'personel_no': pno, 'ad': pad, 'soyad': psoyad, 'departman': pdepartman,
                                             'maas': pmaas, 'uzmanlık': duz, 'deneyim_yili': ddy, 'hastane': dh}])
+                df = pd.concat([df, yeni_satir], ignore_index=True)
 
             elif secim == 3:
                 pno = int(input("Personel No: "))
@@ -100,6 +170,7 @@ def main():
                 hemsireler.append(yeni_hemsire)
                 yeni_satir = pd.DataFrame([{'personel_no': pno, 'ad': pad, 'soyad': psoyad, 'departman': pdepartman,
                                             'maas': pmaas, 'calisma_saati': hecs, 'sertifika': hes, 'hastane': heh}])
+                df = pd.concat([df, yeni_satir], ignore_index=True)
 
             elif secim == 4:
                 hano = int(input("Hasta No: "))
@@ -113,6 +184,7 @@ def main():
                 yeni_satir = pd.DataFrame(
                     [{'hasta_no': hano, 'ad': haad, 'soyad': haso, 'dogum_tarihi': hadt, 'hastalik': haha,
                       'tedavi': hate}])
+                df = pd.concat([df, yeni_satir], ignore_index=True)
 
             elif secim == 9:
                 break
